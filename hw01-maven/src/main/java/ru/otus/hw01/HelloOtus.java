@@ -1,3 +1,5 @@
+package ru.otus.hw01;
+
 import com.google.common.base.Strings;
 
 public class HelloOtus {
