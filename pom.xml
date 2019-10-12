@@ -10,10 +10,12 @@
     <version>2019-09-SNAPSHOT</version>
     <modules>
         <module>hw01-maven</module>
+        <module>hw02-diy_array_list</module>
     </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.source>12</maven.compiler.source>
         <maven.compiler.target>12</maven.compiler.target>
         <com.google.guava.version>28.1-jre</com.google.guava.version>
