@@ -3,22 +3,32 @@ package ru.otus.hw02;
 import java.util.*;
 
 public class DIYArrayList<T> implements List<T> {
-    private Object[] elements = new Object[]{};
+    // initial elements container size
+    private static int initialSize = 10;
+
+    // default factor to increase elements container size
+    private static float increaseFactor = 1.5f;
+
+    // container for elements
+    private Object[] elementsContainer = new Object[initialSize];
+
+    // number of elements in container
+    private int actualSize = 0;
 
     @Override
     public int size() {
-        return elements.length;
+        return actualSize;
     }
 
     @Override
     public boolean isEmpty() {
-        return elements.length == 0;
+        return actualSize == 0;
     }
 
     @Override
     public boolean contains(Object o) {
-        for (Object element : elements) {
-            if (Objects.equals(element, o)) {
+        for (int i = 0; i < actualSize; i++) {
+            if (Objects.equals(elementsContainer[i], o)) {
                 return true;
             }
         }
@@ -28,16 +38,16 @@ public class DIYArrayList<T> implements List<T> {
 
     @Override
     public Object[] toArray() {
-        return elements;
+        return actualElements();
     }
 
     @Override
     public boolean add(T t) {
-        int currentElementsNumber = elements.length;
+        if (actualSize == elementsContainer.length) {
+            increaseContainerSizeDefault();
+        }
 
-        increaseElementsSize(1);
-
-        elements[currentElementsNumber] = t;
+        elementsContainer[actualSize++] = t;
 
         return true;
     }
@@ -55,30 +65,32 @@ public class DIYArrayList<T> implements List<T> {
 
     @Override
     public boolean addAll(Collection<? extends T> c) {
-        Object[] currentElements = elements;
-
         int collectionSize = c.size();
-        increaseElementsSize(collectionSize);
 
-        System.arraycopy(c.toArray(), 0, elements, currentElements.length, collectionSize);
+        if (actualSize + collectionSize >= elementsContainer.length) {
+            increaseContainerSize(collectionSize);
+        }
+
+        System.arraycopy(c.toArray(), 0, elementsContainer, actualSize, collectionSize);
+        actualSize += collectionSize;
 
         return true;
     }
 
     @Override
     public T get(int index) {
-        Objects.checkIndex(index, elements.length);
+        Objects.checkIndex(index, actualSize);
 
-        return (T)elements[index];
+        return (T) elementsContainer[index];
     }
 
     @Override
     public T set(int index, T element) {
-        Objects.checkIndex(index, elements.length);
+        Objects.checkIndex(index, actualSize);
 
-        T old = (T)elements[index];
+        T old = (T) elementsContainer[index];
 
-        elements[index] = element;
+        elementsContainer[index] = element;
 
         return old;
     }
@@ -105,12 +117,12 @@ public class DIYArrayList<T> implements List<T> {
 
         @Override
         public boolean hasNext() {
-            return currentIndex != elements.length;
+            return currentIndex != actualSize;
         }
 
         @Override
         public T next() throws NoSuchElementException {
-            if (currentIndex >= elements.length) {
+            if (currentIndex >= actualSize) {
                 throw new NoSuchElementException();
             }
 
@@ -140,13 +152,15 @@ public class DIYArrayList<T> implements List<T> {
 
             lastReturned = previousIndex;
 
-            if (previousIndex >= elements.length) {
+            if (previousIndex >= actualSize) {
                 throw new ConcurrentModificationException();
             }
 
             if (!hasPrevious()) {
                 throw new NoSuchElementException();
             }
+
+            currentIndex--;
 
             return get(previousIndex);
         }
@@ -158,7 +172,7 @@ public class DIYArrayList<T> implements List<T> {
 
         @Override
         public int previousIndex() {
-            return --currentIndex;
+            return currentIndex - 1;
         }
 
         @Override
@@ -240,11 +254,27 @@ public class DIYArrayList<T> implements List<T> {
         throw new UnsupportedOperationException();
     }
 
-    private void increaseElementsSize(int newElementsNumber) {
-        Object[] increasedElementsArray = new Object[elements.length + newElementsNumber];
+    private void increaseContainerSizeDefault() {
+        elementsContainer = Arrays.copyOf(elementsContainer, increasedContainerSize(elementsContainer.length));
+    }
 
-        System.arraycopy(elements, 0, increasedElementsArray, 0, elements.length);
+    private void increaseContainerSize(int newElementsNumber) {
+        if (newElementsNumber > increasedContainerSize(elementsContainer.length)) {
+            elementsContainer =
+                Arrays.copyOf(
+                    elementsContainer,
+                    increasedContainerSize(elementsContainer.length + newElementsNumber)
+                );
+        } else {
+            increaseContainerSizeDefault();
+        }
+    }
 
-        elements = increasedElementsArray;
+    private int increasedContainerSize(int containerSize) {
+        return (int)(containerSize * increaseFactor);
+    }
+
+    private Object[] actualElements() {
+        return Arrays.copyOf(elementsContainer, actualSize);
     }
 }

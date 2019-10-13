@@ -2,7 +2,6 @@ package ru.otus.hw02;
 
 import ru.otus.hw02.cat.Cat;
 import ru.otus.hw02.cat.HomeCat;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;

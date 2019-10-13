@@ -2,7 +2,6 @@ package ru.otus.hw02;
 
 import org.junit.Assert;
 import org.junit.Test;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
