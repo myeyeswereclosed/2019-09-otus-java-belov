@@ -4,16 +4,30 @@ import java.util.*;
 
 public class DIYArrayList<T> implements List<T> {
     // initial elements container size
-    private static int initialSize = 10;
+    private static final int INITIAL_SIZE = 10;
 
     // default factor to increase elements container size
-    private static float increaseFactor = 1.5f;
+    private static final float INCREASE_FACTOR = 1.5f;
 
     // container for elements
-    private Object[] elementsContainer = new Object[initialSize];
+    private Object[] elementsContainer;
 
     // number of elements in container
     private int actualSize = 0;
+
+    public DIYArrayList() {
+        elementsContainer = new Object[INITIAL_SIZE];
+    }
+
+    public DIYArrayList(int size) {
+        if (size > 0) {
+            elementsContainer = new Object[size];
+        } else if (size == 0) {
+            elementsContainer = new Object[INITIAL_SIZE];
+        } else {
+            throw new IllegalArgumentException("List size is invalid " + size);
+        }
+    }
 
     @Override
     public int size() {
@@ -271,7 +285,7 @@ public class DIYArrayList<T> implements List<T> {
     }
 
     private int increasedContainerSize(int containerSize) {
-        return (int)(containerSize * increaseFactor);
+        return (int)(containerSize * INCREASE_FACTOR);
     }
 
     private Object[] actualElements() {
