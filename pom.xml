@@ -12,6 +12,7 @@
         <module>hw01-maven</module>
         <module>hw02-diy_array_list</module>
         <module>hw03-gc</module>
+        <module>hw04_logging</module>
     </modules>
 
     <properties>
