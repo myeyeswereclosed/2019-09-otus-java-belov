@@ -32,7 +32,7 @@ public class TestRunner {
             afterMethods = findMethods(clazz, After.class);
             testMethods = findMethods(clazz, Test.class);
 
-            runTests(clazz.newInstance());
+            runTests(clazz);
 
             System.out.println(statisticsAsString());
         } catch (Exception e) {
@@ -40,25 +40,40 @@ public class TestRunner {
         }
     }
 
-    private void runTests(Object test) {
-        testMethods.forEach(testMethod -> runTestMethod(test, testMethod));
+    private void runTests(Class clazz) {
+        testMethods.forEach(
+            testMethod -> {
+                try {
+                    runTestMethod(clazz, testMethod);
+                } catch (Exception e) {
+                    // instance creation or before or (before + after) throws Exception
+                    handleException(e);
+                }
+            }
+        );
     }
 
-    private void runTestMethod(Object test, Method method) {
+    private void runTestMethod(Class clazz, Method method) throws Exception {
+        Object test = clazz.newInstance();
+
         try {
             invoke(test, beforeMethods);
-
-            runTest(test, method);
-
-            invoke(test, afterMethods);
         } catch (Exception e) {
             handleException(e);
+            // some before method throws Exception
+            invoke(test, afterMethods);
+
+            return;
         }
+
+        runTest(test, method);
     }
 
     private void runTest(Object test, Method method) {
         try {
             method.invoke(test);
+
+            invoke(test, afterMethods);
 
             updateStatistics(TestResult.SUCCESS);
         } catch (InvocationTargetException e) {
