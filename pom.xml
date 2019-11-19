@@ -14,6 +14,7 @@
         <module>hw03-gc</module>
         <module>hw04_logging</module>
         <module>hw05_test_framework</module>
+        <module>hw06_atm</module>
     </modules>
 
     <properties>
