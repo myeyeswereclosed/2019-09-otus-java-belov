@@ -15,6 +15,7 @@
         <module>hw04_logging</module>
         <module>hw05_test_framework</module>
         <module>hw06_atm</module>
+        <module>hw07_atm_department</module>
     </modules>
 
     <properties>
