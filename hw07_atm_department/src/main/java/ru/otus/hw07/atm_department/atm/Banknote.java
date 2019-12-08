@@ -1,7 +1,7 @@
 package ru.otus.hw07.atm_department.atm;
 
 public class Banknote {
-    private int nominal;
+    private final int nominal;
 
     public Banknote(int nominal) {
         this.nominal = nominal;

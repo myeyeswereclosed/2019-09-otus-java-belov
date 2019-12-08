@@ -1,10 +1,11 @@
 package ru.otus.hw07.atm_department.atm;
 
+import ru.otus.hw07.atm_department.MoneyStorage;
 import ru.otus.hw07.atm_department.atm.atm_cell.AtmCell;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Atm implements IAtm {
+public class Atm implements WithdrawAndInsertMoney, MoneyStorage {
     private static final String WITHDRAWAL_OK_MESSAGE = "Please, take your money. Sum remained in ATM = ";
     private static final String WITHDRAWAL_UNAVAILABLE_MESSAGE = "Sorry, withdrawal is unavailable for your sum. ";
     private static final String BANKNOTE_REJECTED_MESSAGE = "Banknote rejected";

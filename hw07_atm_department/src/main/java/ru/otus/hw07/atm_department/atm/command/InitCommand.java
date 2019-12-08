@@ -1,7 +1,7 @@
 package ru.otus.hw07.atm_department.atm.command;
 
 import ru.otus.hw07.atm_department.atm.Atm;
-import ru.otus.hw07.atm_department.atm.IAtm;
+import ru.otus.hw07.atm_department.atm.WithdrawAndInsertMoney;
 import ru.otus.hw07.atm_department.atm.atm_cell.AtmCell;
 import ru.otus.hw07.atm_department.atm.atm_cell.BanknoteCell;
 import ru.otus.hw07.atm_department.money_distributing.DistributingStrategy;
@@ -24,7 +24,7 @@ public class InitCommand implements InitAtmCommand {
         distributingStrategy = banknotesStrategy;
     }
 
-    public IAtm execute() {
+    public WithdrawAndInsertMoney execute() {
         List<AtmCell> cells = new ArrayList<>();
 
         initialState = distributingStrategy.banknotesNumberMap(banknotes, banknotesMaxNumber);
@@ -36,7 +36,7 @@ public class InitCommand implements InitAtmCommand {
         return new Atm(cells);
     }
 
-    public IAtm restore() {
+    public WithdrawAndInsertMoney restore() {
         return
             new Atm(
                 initialState

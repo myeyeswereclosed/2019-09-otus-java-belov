@@ -1,6 +1,6 @@
 package ru.otus.hw07.atm_department;
 
-import ru.otus.hw07.atm_department.atm.IAtm;
+import ru.otus.hw07.atm_department.atm.WithdrawAndInsertMoney;
 import java.util.List;
 
 public class ProxyAtmDepartment implements IAtmDepartment {
@@ -13,7 +13,7 @@ public class ProxyAtmDepartment implements IAtmDepartment {
     }
 
     @Override
-    public List<IAtm> atmList() {
+    public List<WithdrawAndInsertMoney> atmList() {
         return department.atmList();
     }
 

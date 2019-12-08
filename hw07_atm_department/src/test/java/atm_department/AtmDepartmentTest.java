@@ -2,9 +2,9 @@ package atm_department;
 
 import org.junit.Assert;
 import org.junit.Test;
-import ru.otus.hw07.atm_department.atm.IAtm;
 import ru.otus.hw07.atm_department.AtmDepartment;
 import ru.otus.hw07.atm_department.atm.command.InitCommand;
+import ru.otus.hw07.atm_department.money_distributing.DistributingStrategyEnum;
 import ru.otus.hw07.atm_department.money_distributing.StrategyFactory;
 
 import java.util.ArrayList;
@@ -20,8 +20,8 @@ public class AtmDepartmentTest {
         AtmDepartment department =
             new AtmDepartment(
                 new ArrayList<>() {{
-                    add(new InitCommand(banknotes1, 15, StrategyFactory.random()));
-                    add(new InitCommand(banknotes2, 20, StrategyFactory.simple()));
+                    add(new InitCommand(banknotes1, 15, StrategyFactory.create(DistributingStrategyEnum.RANDOM)));
+                    add(new InitCommand(banknotes2, 20, StrategyFactory.create(DistributingStrategyEnum.SIMPLE)));
                 }}
             );
 
