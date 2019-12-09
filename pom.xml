@@ -15,6 +15,7 @@
         <module>hw04_logging</module>
         <module>hw05_test_framework</module>
         <module>hw06_atm</module>
+        <module>hw08_json_writer</module>
     </modules>
 
     <properties>
