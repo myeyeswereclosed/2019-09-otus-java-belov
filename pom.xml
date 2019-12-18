@@ -18,6 +18,7 @@
         <module>hw07_atm_department</module>
         <module>hw08_json_writer</module>
         <module>hw09_orm</module>
+        <module>hw10_hibernate</module>
     </modules>
 
     <properties>
