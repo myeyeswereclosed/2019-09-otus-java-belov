@@ -16,13 +16,17 @@ public class User {
     @Column(name = "name")
     private String name;
 
-    @OneToOne(targetEntity = AddressDataSet.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(targetEntity = AddressDataSet.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
     private AddressDataSet address;
 
     @OneToMany(targetEntity = PhoneDataSet.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private List<PhoneDataSet> phones = new ArrayList<>();
+
+    public List<PhoneDataSet> getPhones() {
+        return phones;
+    }
 
     public User() {
     }

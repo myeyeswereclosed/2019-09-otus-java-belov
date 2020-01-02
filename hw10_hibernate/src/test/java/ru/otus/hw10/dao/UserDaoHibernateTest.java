@@ -1,6 +1,7 @@
 package ru.otus.hw10.dao;
 
 import org.assertj.core.api.Condition;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.AfterEach;
@@ -94,7 +95,11 @@ class UserDaoHibernateTest {
 
   private User loadUser(long id) {
     try (Session session = sessionFactory.openSession()) {
-      return session.find(User.class, id);
+      User user =  session.find(User.class, id);
+
+      Hibernate.initialize(user.getPhones());
+
+      return user;
     }
   }
 

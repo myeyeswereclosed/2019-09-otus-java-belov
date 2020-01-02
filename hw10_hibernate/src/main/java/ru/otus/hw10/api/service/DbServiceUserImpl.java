@@ -1,11 +1,11 @@
 package ru.otus.hw10.api.service;
 
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.otus.hw10.api.dao.UserDao;
 import ru.otus.hw10.api.entity.User;
 import ru.otus.hw10.api.sessionmanager.SessionManager;
-
 import java.util.Optional;
 
 public class DbServiceUserImpl implements DBServiceUser {
@@ -43,7 +43,10 @@ public class DbServiceUserImpl implements DBServiceUser {
       try {
         Optional<User> userOptional = userDao.findById(id);
 
-        logger.info("user: {}", userOptional.orElse(null));
+        userOptional.ifPresent(user -> Hibernate.initialize(user.getPhones()));
+
+        sessionManager.commitSession();
+
         return userOptional;
       } catch (Exception e) {
         logger.error(e.getMessage(), e);

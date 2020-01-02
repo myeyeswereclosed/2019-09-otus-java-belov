@@ -1,7 +1,6 @@
 package ru.otus.hw10.api.entity;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Entity
 @Table(name="address")
@@ -27,6 +26,6 @@ public class AddressDataSet {
 
     @Override
     public String toString() {
-        return "Address{street ='" + street + "'}";
+        return "Address{street ='" + street  + '}';
     }
 }
