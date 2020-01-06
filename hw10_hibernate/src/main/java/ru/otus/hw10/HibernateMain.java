@@ -23,7 +23,7 @@ public class HibernateMain {
         outputUserOptional("Created user", dbService.getUser(id));
     }
 
-    private static DBServiceUser dbService() {
+    public static DBServiceUser dbService() {
         SessionManagerHibernate sessionManager =
             new SessionManagerHibernate(
                 HibernateUtils.buildSessionFactory("hibernate.cfg.xml", entityClasses())
@@ -36,7 +36,7 @@ public class HibernateMain {
         return new Class[] {User.class, AddressDataSet.class, PhoneDataSet.class};
     }
 
-    private static User createUser() {
+    public static User createUser() {
         return
             new User("Вася", new AddressDataSet("Karla Marksa"))
                 .addPhone(new PhoneDataSet("+79161112233"))
@@ -46,7 +46,7 @@ public class HibernateMain {
         ;
     }
 
-    private static void outputUserOptional(String header, Optional<User> mayBeUser) {
+    public static void outputUserOptional(String header, Optional<User> mayBeUser) {
         System.out.println("-----------------------------------------------------------");
         System.out.println(header);
         mayBeUser.ifPresentOrElse(System.out::println, () -> logger.info("User not found"));

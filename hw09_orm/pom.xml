@@ -50,7 +50,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>ru.otus.hw08.AtmMain</mainClass>
+                            <mainClass>ru.otus.hw09.JdbcTemplateMain</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
