@@ -21,7 +21,7 @@ public class CacheMain {
   }
 
   private void demo() {
-    HwCache<String, User> cache = new MyCache<>();
+    HwCache<String, User> cache = new MyCache<>(logger);
     HwListener<String, User> listener =
         (key, value, action) -> logger.info("key:{}, value:{}, action: {}", key, value, action);
     cache.addListener(listener);

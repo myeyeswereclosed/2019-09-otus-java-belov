@@ -2,15 +2,19 @@ package ru.otus.hw11.cache;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.otus.hw10.api.entity.AddressDataSet;
 import ru.otus.hw10.api.entity.User;
 
 public class MyCacheTest {
     private static int USER_ID = 23;
+    private static final Logger logger = LoggerFactory.getLogger(MyCacheTest.class);
+
 
     @Test
     public void cacheUser() {
-        HwCache<String, User> cache = new MyCache<>();
+        HwCache<String, User> cache = new MyCache<>(logger);
         ListenerMock listener = new ListenerMock();
         cache.addListener(listener);
 
@@ -25,7 +29,7 @@ public class MyCacheTest {
 
     @Test
     public void noCacheAfterGc() {
-        HwCache<String, User> cache = new MyCache<>();
+        HwCache<String, User> cache = new MyCache<>(logger);
         ListenerMock listener = new ListenerMock();
         cache.addListener(listener);
 
@@ -45,7 +49,7 @@ public class MyCacheTest {
 
     @Test
     public void removeCachedUser() {
-        HwCache<String, User> cache = new MyCache<>();
+        HwCache<String, User> cache = new MyCache<>(logger);
         ListenerMock listener = new ListenerMock();
         cache.addListener(listener);
 
@@ -65,7 +69,7 @@ public class MyCacheTest {
 
     @Test
     public void noListener() {
-        HwCache<String, User> cache = new MyCache<>();
+        HwCache<String, User> cache = new MyCache<>(logger);
         ListenerMock listener = new ListenerMock();
 
         User user = new User("Nikolay Ivanovich", new AddressDataSet("Wall Street, 15"));
@@ -79,7 +83,7 @@ public class MyCacheTest {
 
     @Test
     public void removeListener() {
-        HwCache<String, User> cache = new MyCache<>();
+        HwCache<String, User> cache = new MyCache<>(logger);
         ListenerMock listener = new ListenerMock();
         cache.addListener(listener);
 

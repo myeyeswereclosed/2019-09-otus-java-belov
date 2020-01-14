@@ -18,7 +18,7 @@ public class CachedUserDbService implements DBServiceUser {
     public long saveUser(User user) {
         long id = service.saveUser(user);
 
-        cache.put(String.valueOf(id), user);
+        cacheUser(user);
 
         return id;
     }
@@ -28,7 +28,16 @@ public class CachedUserDbService implements DBServiceUser {
         return
             Optional
                 .ofNullable(cache.get(String.valueOf(id)))
-                .or(() -> service.getUser(id))
+                .or(() -> service.getUser(id).map(this::cachedUser))
         ;
+    }
+
+    private User cachedUser(User user) {
+        cacheUser(user);
+        return user;
+    }
+
+    private void cacheUser(User user) {
+        cache.put(String.valueOf(user.getId()), user);
     }
 }
