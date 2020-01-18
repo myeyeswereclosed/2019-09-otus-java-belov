@@ -1,6 +1,5 @@
 package ru.otus.hw12;
 
-import com.google.gson.GsonBuilder;
 import org.eclipse.jetty.security.HashLoginService;
 import org.eclipse.jetty.security.LoginService;
 import org.slf4j.Logger;
@@ -23,6 +22,13 @@ import ru.otus.hw12.services.common.UserService;
 import static ru.otus.hw12.server.SecurityType.FILTER_BASED;
 
 public class UserServer {
+    public final static String LOGIN = "/login";
+    public final static String ADMIN= "/admin";
+    public final static String ADD_USER = "/admin/users/add";
+    public final static String USERS = "/admin/users";
+
+    public final static String[] secured = {ADMIN, ADD_USER, USERS};
+
     private static final int WEB_SERVER_PORT = 8080;
     private static final String TEMPLATES_DIR = "/templates/";
     private static final String HASH_LOGIN_SERVICE_CONFIG_NAME = "realm.properties";
@@ -45,10 +51,8 @@ public class UserServer {
                 HASH_LOGIN_SERVICE_CONFIG_NAME
             );
 
-//      UserDao userDao = new InMemoryUserDao();
         UserDao userDao = userDao();
         LoginService loginServiceForBasicSecurity = new HashLoginService(REALM_NAME, hashLoginServiceConfigPath);
-//      LoginService loginServiceForBasicSecurity = new InMemoryLoginServiceImpl(userDao);
 
         UsersWebServer usersWebServer =
             new UsersWebServerImpl(
@@ -58,7 +62,6 @@ public class UserServer {
                 userService(userDao),
                 loginServiceForBasicSecurity,
                 userDao,
-                new GsonBuilder().serializeNulls().setPrettyPrinting().create(),
                 new TemplateProcessorImpl(TEMPLATES_DIR)
             );
 

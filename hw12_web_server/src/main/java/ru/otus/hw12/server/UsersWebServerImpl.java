@@ -14,6 +14,7 @@ import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.security.Constraint;
+import ru.otus.hw12.UserServer;
 import ru.otus.hw12.api.dao.UserDao;
 import ru.otus.hw12.helpers.FileSystemHelper;
 import ru.otus.hw12.services.template.TemplateProcessor;
@@ -22,7 +23,7 @@ import ru.otus.hw12.services.common.UserService;
 import ru.otus.hw12.servlet.*;
 import ru.otus.hw12.servlet.admin.AddUserServlet;
 import ru.otus.hw12.servlet.admin.AdminServlet;
-import ru.otus.hw12.servlet.admin.AllUsersServlet;
+import ru.otus.hw12.servlet.admin.UsersServlet;
 
 import javax.servlet.http.HttpServlet;
 import java.util.ArrayList;
@@ -42,7 +43,6 @@ public class UsersWebServerImpl implements UsersWebServer {
     private final UserService userService;
     private final LoginService loginServiceForBasicSecurity;
     private final UserDao userDao;
-    private final Gson gson;
     private final TemplateProcessor templateProcessor;
     private final Server server;
 
@@ -53,7 +53,6 @@ public class UsersWebServerImpl implements UsersWebServer {
         UserService userService,
         LoginService loginServiceForBasicSecurity,
         UserDao userDao,
-        Gson gson,
         TemplateProcessor templateProcessor
     ) {
         this.port = port;
@@ -62,7 +61,6 @@ public class UsersWebServerImpl implements UsersWebServer {
         this.userService = userService;
         this.loginServiceForBasicSecurity = loginServiceForBasicSecurity;
         this.userDao = userDao;
-        this.gson = gson;
         this.templateProcessor = templateProcessor;
 
         server = initContext();
@@ -108,12 +106,9 @@ public class UsersWebServerImpl implements UsersWebServer {
     private ServletContextHandler createServletContextHandler() {
         var handler = new ServletContextHandler(ServletContextHandler.SESSIONS);
 
-        addServlet(handler, new UsersServlet(templateProcessor, userDao), Route.USERS.path()).
-        addServlet(handler, new UsersApiServlet(userDao, gson), Route.USER.path()).
-        addServlet(handler, new AdminServlet(templateProcessor), Route.ADMIN.path()).
-//        addServlet(handler, new AddUserServlet(templateProcessor, userService), Route.ADD_USER.path());
-        addServlet(handler, new AddUserServlet(userService, templateProcessor), Route.ADD_USER.path());
-        addServlet(handler, new AllUsersServlet(userService, gson), Route.ALL_USERS.path());
+        addServlet(handler, new AdminServlet(templateProcessor), UserServer.ADMIN).
+        addServlet(handler, new AddUserServlet(userService, templateProcessor), UserServer.ADD_USER).
+        addServlet(handler, new UsersServlet(userService, templateProcessor), UserServer.USERS);
 
         return handler;
     }
@@ -128,17 +123,13 @@ public class UsersWebServerImpl implements UsersWebServer {
         if (securityType == SecurityType.NONE){
             return servletContextHandler;
         } else if (securityType == SecurityType.FILTER_BASED) {
-            applyFilterBasedSecurity(servletContextHandler, securedRoutes());
+            applyFilterBasedSecurity(servletContextHandler, UserServer.secured);
             return servletContextHandler;
         } else if (securityType == SecurityType.BASIC) {
-            return createBasicAuthSecurityHandler(servletContextHandler, securedRoutes());
+            return createBasicAuthSecurityHandler(servletContextHandler, UserServer.secured);
         } else {
             throw new InvalidSecurityTypeException(securityType);
         }
-    }
-
-    private String[] securedRoutes() {
-        return Route.secured.stream().map(Route::path).toArray(String[]::new);
     }
 
     private ServletContextHandler applyFilterBasedSecurity(ServletContextHandler servletContextHandler, String... paths) {
@@ -146,7 +137,7 @@ public class UsersWebServerImpl implements UsersWebServer {
             new ServletHolder(
                 new LoginServlet(templateProcessor, userAuthServiceForFilterBasedSecurity)
             ),
-            Route.LOGIN.path()
+            UserServer.LOGIN
         );
 
         AuthorizationFilter authorizationFilter = new AuthorizationFilter();

@@ -1,6 +1,7 @@
 package ru.otus.hw12.servlet;
 
-import ru.otus.hw12.server.Route;
+import ru.otus.hw12.UserServer;
+
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,11 +29,10 @@ public class AuthorizationFilter implements Filter {
         HttpSession session = request.getSession(false);
 
         if (session == null) {
-            response.sendRedirect(Route.LOGIN.path());
+            response.sendRedirect(UserServer.LOGIN);
         } else {
             filterChain.doFilter(servletRequest, servletResponse);
         }
-
     }
 
     @Override

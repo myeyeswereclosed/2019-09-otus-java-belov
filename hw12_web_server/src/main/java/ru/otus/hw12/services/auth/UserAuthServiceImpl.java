@@ -5,7 +5,6 @@ import ru.otus.hw12.api.dao.UserDao;
 import ru.otus.hw12.api.sessionmanager.SessionManager;
 import ru.otus.hw12.model.User;
 import ru.otus.hw12.services.hash.HashService;
-
 import java.util.Optional;
 
 public class UserAuthServiceImpl implements UserAuthService {
@@ -15,15 +14,6 @@ public class UserAuthServiceImpl implements UserAuthService {
     public UserAuthServiceImpl(UserDao userDao, Logger logger) {
         this.userDao = userDao;
         this.logger = logger;
-    }
-
-    @Override
-    public boolean authenticate(String login, String password) {
-        return
-            userDao.findByLogin(login)
-                .map(user -> user.getPassword().equals(password))
-                .orElse(false)
-        ;
     }
 
     @Override

@@ -1,7 +1,7 @@
 package ru.otus.hw12.servlet;
 
+import ru.otus.hw12.UserServer;
 import ru.otus.hw12.model.User;
-import ru.otus.hw12.server.Route;
 import ru.otus.hw12.services.template.TemplateProcessor;
 import ru.otus.hw12.services.auth.UserAuthService;
 import javax.servlet.http.HttpServletRequest;
@@ -37,24 +37,11 @@ public class LoginServlet extends BaseServlet {
                 requestParam(request, PARAM_PASSWORD)
             );
 
-        if (authenticated.isPresent()) {
-            handleAuthenticated(authenticated.get(), request, response);
+        if (authenticated.isPresent() && authenticated.get().isAdmin()) {
+            request.getSession().setMaxInactiveInterval(MAX_INACTIVE_INTERVAL);
+            response.sendRedirect(UserServer.ADMIN);
         } else {
             response.setStatus(SC_UNAUTHORIZED);
-        }
-    }
-
-    private void handleAuthenticated(
-        User user,
-        HttpServletRequest request,
-        HttpServletResponse response
-    ) throws IOException {
-        request.getSession().setMaxInactiveInterval(MAX_INACTIVE_INTERVAL);
-
-        if (user.isAdmin()) {
-            response.sendRedirect(Route.ADMIN.path());
-        } else {
-            response.sendRedirect(Route.USERS.path());
         }
     }
 }

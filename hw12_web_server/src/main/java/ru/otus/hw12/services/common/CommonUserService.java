@@ -1,7 +1,6 @@
 package ru.otus.hw12.services.common;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import ru.otus.hw12.api.dao.UserDao;
 import ru.otus.hw12.api.sessionmanager.SessionManager;
 import ru.otus.hw12.model.User;

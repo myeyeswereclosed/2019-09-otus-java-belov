@@ -9,7 +9,6 @@ import ru.otus.hw12.api.sessionmanager.SessionManager;
 import ru.otus.hw12.api.sessionmanager.hibernate.DatabaseSessionHibernate;
 import ru.otus.hw12.api.sessionmanager.hibernate.SessionManagerHibernate;
 import ru.otus.hw12.model.User;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -24,27 +23,7 @@ public class HibernateUserDao implements UserDao {
   }
 
   @Override
-  public Optional<User> findById(long id) {
-    DatabaseSessionHibernate currentSession = sessionManager.getCurrentSession();
-
-    try {
-      return Optional.ofNullable(currentSession.getHibernateSession().find(User.class, id));
-    } catch (Exception e) {
-      logger.error(e.getMessage(), e);
-    }
-
-    return Optional.empty();
-  }
-
-  @Override
-  public Optional<User> findRandomUser() {
-    return Optional.empty();
-  }
-
-  @Override
   public Optional<User> findByLogin(String login) {
-//    Criteria criteria = sessionManager.getCurrentSession().getHibernateSession().createCriteria(User.class);
-
     return
         Optional.of(
           (User)sessionManager
