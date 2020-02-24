@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Client page</title>
+        <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+    </head>
+    <body>
+        <div id="main-content" class="container">
+            <div class="row">
+                <div class="col-md-12 border rounded">
+                    <h5>All users: </h5>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table id="users-list" class="table table-striped">
+                                <tbody id="users-list-content">
+                                    <tr th:each="user : ${users}">
+                                        <td th:text="${user.name}">Name</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

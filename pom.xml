@@ -22,6 +22,7 @@
         <module>hw11_cache_engine</module>
         <module>hw12_web_server</module>
         <module>hw13_ioc_container</module>
+        <module>hw15_messaging_system</module>
     </modules>
 
     <properties>
