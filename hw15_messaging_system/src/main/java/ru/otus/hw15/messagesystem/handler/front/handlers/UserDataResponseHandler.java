@@ -12,7 +12,7 @@ import ru.otus.hw15.messagesystem.handler.MessageHandler;
 import java.util.Optional;
 import java.util.UUID;
 
-@Component("userDataResponseHandler")
+@Component
 public class UserDataResponseHandler implements MessageHandler {
   private static final Logger logger = LoggerFactory.getLogger(UserDataResponseHandler.class);
 

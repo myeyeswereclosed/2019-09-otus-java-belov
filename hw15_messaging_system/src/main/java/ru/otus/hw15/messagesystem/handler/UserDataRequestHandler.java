@@ -10,7 +10,7 @@ import ru.otus.hw15.messagesystem.MessageType;
 import ru.otus.hw15.service.user.UserService;
 import java.util.Optional;
 
-@Component("userDataRequestHandler")
+@Component
 public class UserDataRequestHandler implements MessageHandler {
   private final UserService userService;
   private final Serializer serializer;

@@ -14,7 +14,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Service("commonUserService")
+@Service
 public class CommonUserService implements UserService {
     private final static Logger logger = LoggerFactory.getLogger(CommonUserService.class);
 
