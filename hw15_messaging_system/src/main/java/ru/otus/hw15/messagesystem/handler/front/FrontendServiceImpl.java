@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import ru.otus.hw15.domain.User;
 import ru.otus.hw15.messagesystem.Message;
 import ru.otus.hw15.messagesystem.MessageType;
+import ru.otus.hw15.messagesystem.client.FrontendClient;
 import ru.otus.hw15.messagesystem.client.MsClient;
 import java.util.Map;
 import java.util.Optional;
@@ -23,7 +24,7 @@ public class FrontendServiceImpl implements FrontendService {
   private final MsClient msClient;
 
   @Autowired
-  public FrontendServiceImpl(@Qualifier("frontendMsClient") MsClient msClient) {
+  public FrontendServiceImpl(FrontendClient msClient) {
     this.msClient = msClient;
   }
 

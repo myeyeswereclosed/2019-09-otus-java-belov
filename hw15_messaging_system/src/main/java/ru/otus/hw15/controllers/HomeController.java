@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import ru.otus.hw15.domain.User;
+import ru.otus.hw15.service.user.CachedUserService;
 import ru.otus.hw15.service.user.UserService;
-
 import java.util.List;
 
 @Controller
@@ -19,7 +19,7 @@ public class HomeController {
     private UserService userService;
 
     @Autowired
-    public HomeController(@Qualifier("cachedUserService") UserService userService) {
+    public HomeController(CachedUserService userService) {
         this.userService = userService;
     }
 
