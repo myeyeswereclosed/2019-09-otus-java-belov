@@ -54,7 +54,7 @@
                     <label for="user-role">Role:</label>
                     <select class="form-control selectpicker" id="user-role" name="role">
                         <option
-                                th:each="role : ${T(ru.otus.hw15.domain.UserRole).values()}"
+                                th:each="role : ${T(ru.otus.hw15.ru.otus.hw16.lib.domain.UserRole).values()}"
                                 th:value="${role}"
                                 th:text="${role}">
                         </option>
