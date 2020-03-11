@@ -3,9 +3,9 @@ package ru.otus.hw16.message_system.server.clients_runner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import java.io.BufferedReader;
+import ru.otus.hw16.db_service.DbServiceMain;
+import ru.otus.hw16.frontend_client.FrontendMain;
 import java.io.File;
-import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -16,16 +16,8 @@ public class Runner implements Runnable {
 
   private static final List<Client> clients =
     Arrays.asList(
-      new Client(
-        "/home/belov/projects/java/2019-09-otus-java-belov/hw16_message_server/hw16_db_service/target",
-        "hw16_db_service.jar",
-        Arrays.asList(7777, 7778)
-      ),
-      new Client(
-        "/home/belov/projects/java/2019-09-otus-java-belov/hw16_message_server/hw16_frontend_client/target",
-        "hw16_frontend_client.jar",
-        Arrays.asList(8080, 8081)
-      )
+      new Client("DbService", targetDir(DbServiceMain.class), "hw16_db_service.jar", Arrays.asList(7777, 7778)),
+      new Client("FrontendClient", targetDir(FrontendMain.class), "hw16_frontend_client.jar", Arrays.asList(8080, 8082))
     );
 
   public void run() {
@@ -38,37 +30,43 @@ public class Runner implements Runnable {
   }
 
   private void startClient(Client client, int port) {
-      logger.info("Starting client");
-
-      var currentDir = new File(client.targetPath);
-
-      var procBuilder = new ProcessBuilder("java", "-jar", client.jar, "--server.port=" + port)
-          .inheritIO()
-          .directory(currentDir);
+      logger.info("Starting client {} on port {}", client.name, port);
 
       try {
-          var process = procBuilder.start();
+          new ProcessBuilder("java", "-jar", client.jar, "--server.port=" + port)
+              .inheritIO()
+              .directory(new File(client.targetPath))
+              .start()
+          ;
 
-          try (var reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-              String line;
-
-              while ((line = reader.readLine()) != null) {
-                  logger.info("proc out: {}", line);
-              }
-          }
-
+          // to start Spring)
           Thread.sleep(TimeUnit.SECONDS.toMillis(10));
       } catch (Exception e) {
           logger.error(e.getMessage(), e);
       }
   }
 
+  private static String targetDir(Class clazz) {
+      return
+          new File(
+              clazz
+                  .getProtectionDomain()
+                  .getCodeSource()
+                  .getLocation()
+                  .getPath()
+          )
+              .getParent()
+      ;
+  }
+
   private static class Client {
+    private String name;
     private String targetPath;
     private String jar;
     private List<Integer> ports;
 
-    private Client(String targetPath, String jar, List<Integer> ports) {
+    private Client(String name, String targetPath, String jar, List<Integer> ports) {
+      this.name = name;
       this.targetPath = targetPath;
       this.jar = jar;
       this.ports = ports;
