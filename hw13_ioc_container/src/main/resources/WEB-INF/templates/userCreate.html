@@ -46,7 +46,7 @@
         <label for="user-role">Role:</label>
         <select id="user-role" name="role">
             <option
-                    th:each="role : ${T(ru.otus.hw13.ru.otus.hw16.lib.domain.UserRole).values()}"
+                    th:each="role : ${T(ru.otus.hw13.domain.UserRole).values()}"
                     th:value="${role}"
                     th:text="${role}"></option>
         </select>

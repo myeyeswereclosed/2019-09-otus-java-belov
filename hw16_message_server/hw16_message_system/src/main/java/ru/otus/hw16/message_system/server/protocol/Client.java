@@ -10,7 +10,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.UUID;
 
-public class Client {
+public class Client implements MessageSystemClient {
     private static final Logger logger = LoggerFactory.getLogger(Client.class);
 
     private final UUID id;

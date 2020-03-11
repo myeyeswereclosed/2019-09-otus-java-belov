@@ -1,6 +1,5 @@
 package ru.otus.hw16.db_service.cache;
 
-
 public interface Cache<K, V> {
 
   void put(K key, V value);

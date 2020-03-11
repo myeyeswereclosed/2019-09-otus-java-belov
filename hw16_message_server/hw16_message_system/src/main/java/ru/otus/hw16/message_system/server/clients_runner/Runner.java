@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class Runner implements Runnable {
@@ -55,6 +56,8 @@ public class Runner implements Runnable {
                   logger.info("proc out: {}", line);
               }
           }
+
+          Thread.sleep(TimeUnit.SECONDS.toMillis(10));
       } catch (Exception e) {
           logger.error(e.getMessage(), e);
       }

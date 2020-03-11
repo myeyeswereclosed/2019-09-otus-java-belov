@@ -24,7 +24,7 @@ public class AdminController {
 
   @MessageMapping("/users/create")
   public void addUser(User user) {
-    logger.info("got User:{} ", user);
+    logger.info("got User:{} ", user.toString());
 
     userService.save(
         user,

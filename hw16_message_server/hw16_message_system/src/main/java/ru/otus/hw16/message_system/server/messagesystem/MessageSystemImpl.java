@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import ru.otus.hw16.lib.protocol.MessageType;
 import ru.otus.hw16.message_system.server.protocol.Client;
+import ru.otus.hw16.message_system.server.protocol.MessageSystemClient;
 
 import java.util.Map;
 import java.util.Optional;
@@ -21,7 +22,7 @@ public final class MessageSystemImpl implements MessageSystem {
 
   private final AtomicBoolean runFlag = new AtomicBoolean(true);
 
-  private final Map<String, Client> clientMap = new ConcurrentHashMap<>();
+  private final Map<String, MessageSystemClient> clientMap = new ConcurrentHashMap<>();
   private final BlockingQueue<Message> messageQueue = new ArrayBlockingQueue<>(MESSAGE_QUEUE_SIZE);
 
   private Runnable disposeCallback;
@@ -76,7 +77,8 @@ public final class MessageSystemImpl implements MessageSystem {
 
   @Override
   public void removeClient(String clientId) {
-    Client removedClient = clientMap.remove(clientId);
+    MessageSystemClient removedClient = clientMap.remove(clientId);
+
     if (removedClient == null) {
       logger.warn("client not found: {}", clientId);
     } else {
@@ -126,7 +128,7 @@ public final class MessageSystemImpl implements MessageSystem {
         if (message != null) {
           logger.debug(
               "Clients are: \r\n{}",
-              clientMap.values().stream().map(Client::toString).collect(Collectors.joining("\r\n"))
+              clientMap.values().stream().map(MessageSystemClient::toString).collect(Collectors.joining("\r\n"))
           );
 
           logger.info("Message type is: {}", message.getType());
@@ -160,7 +162,7 @@ public final class MessageSystemImpl implements MessageSystem {
     logger.info("msgProcessor finished");
   }
 
-  private Optional<Client> findClient(Message message) {
+  private Optional<MessageSystemClient> findClient(Message message) {
       var sourceId = message.getToId();
 
       if (sourceId != null) {
@@ -187,9 +189,9 @@ public final class MessageSystemImpl implements MessageSystem {
     logger.info("msgHandler has been shut down");
   }
 
-  private void handleMessage(Client msClient, Message msg) {
+  private void handleMessage(MessageSystemClient client, Message msg) {
     try {
-      msClient.handle(msg);
+      client.handle(msg);
     } catch (Exception ex) {
       logger.error(ex.getMessage(), ex);
       logger.error("message:{}", msg);

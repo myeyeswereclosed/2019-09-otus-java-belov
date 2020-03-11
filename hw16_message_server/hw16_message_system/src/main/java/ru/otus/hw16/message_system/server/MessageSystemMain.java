@@ -26,7 +26,7 @@ public class MessageSystemMain implements CommandLineRunner {
     }
 
     public void run(String[] args) {
-        var executorService = Executors.newFixedThreadPool(2);
+        var executorService = Executors.newFixedThreadPool(5);
 
         executorService.execute(server);
         executorService.execute(clientsRunner);
