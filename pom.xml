@@ -24,6 +24,7 @@
         <module>hw13_ioc_container</module>
         <module>hw14_num_sequence</module>
         <module>hw15_messaging_system</module>
+        <module>hw16_message_server</module>
     </modules>
 
     <properties>
