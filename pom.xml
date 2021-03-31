@@ -28,7 +28,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.source>12</maven.compiler.source>
         <maven.compiler.target>12</maven.compiler.target>
-        <com.google.guava.version>28.1-jre</com.google.guava.version>
+        <com.google.guava.version>29.0-jre</com.google.guava.version>
     </properties>
 
     <dependencyManagement>
